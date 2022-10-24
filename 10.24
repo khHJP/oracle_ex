@@ -1,0 +1,43 @@
+1. EMPLOYEE 테이블에서 이름, 연봉(월급*12), 총수령액(보너스포함연봉), 실수령액(총 수령액-(월급*세금 3%))가 출력되도록 하시오
+(컬럼명을 지정한 별칭으로 변경)
+
+select
+    emp_name 이름,
+    salary * 12 연봉,
+    (salary + (salary * nvl(bonus,0))) * 12 총수령액,
+    (salary + (salary * nvl(bonus,0))) * 12 - (salary * 0.03) 실수령액
+from 
+    employee;
+    
+
+2. EMPLOYEE 테이블에서 이름, 입사일, 근무 일수(입사한지 몇일인가)를 출력해보시오.
+
+select
+    emp_name 이름,
+    hire_date 입사일,
+    sysdate - hire_date "근무 일수"
+    
+from
+    employee;
+    
+
+3. tbl_escape_watch 테이블에서 description 컬럼에 99.99% 라는 글자가 들어있는 행만 추출하세요.
+
+select 
+    *
+from
+    tbl_escape_watch
+    where
+    description like '%99.99\%%' escape '\';
+    
+    alter session set "oracle_script" = true;
+
+
+4. 관리자계정으로 chun/chun 계정을 생성하고, 접속권한/테이블생성권한을 부여하는 DDL을 작성하세요.
+create user chun
+identified by chun
+defalut tablespace users;
+
+alter user chun quota unlimited on users;
+
+grant connect, resource to chun;
