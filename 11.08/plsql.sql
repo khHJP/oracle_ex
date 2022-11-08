@@ -17,12 +17,13 @@ begin
     into
         v_id
     from 
-        (select 
-            emp_id 
-         from 
-            ex_employee 
-         order by 
-            rownum desc) 
+        (select
+            emp_id,
+            rownum
+         from
+            ex_employee
+         order by
+            emp_id desc) 
     where 
         rownum = 1;
 
