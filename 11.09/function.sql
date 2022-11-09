@@ -31,7 +31,20 @@ begin
         employee
     where
         emp_id = v_emp_id;
-        
+   
+        -- self join으로 풀기    
+--    select
+--        count(*), e.salary
+--    into
+--        v_cnt_manage, v_sal
+--    from
+--        employee e join employee m
+--            on e.emp_id = m.manager_id
+--    where
+--        e.emp_id = v_emp_id
+--    group by
+--        e.emp_id, e.salary;
+
     case
         when v_cnt_manage >= 5 then
             dbms_output.put_line('성과급은 ' || v_sal * 0.15 || '원 입니다.');
@@ -42,34 +55,6 @@ begin
 end;
 /
 
-
--- self-join으로 select구문 한개만 사용
-declare
-    v_emp_id employee.emp_id%type := '&사번';
-    v_cnt_manage number;
-    v_sal employee.salary%type;
-begin
-    select
-        count(*), e.salary
-    into
-        v_cnt_manage, v_sal
-    from
-        employee e join employee m
-            on e.emp_id = m.manager_id
-    where
-        e.emp_id = v_emp_id
-    group by
-        e.emp_id, e.salary;
-        
-    case
-        when v_cnt_manage >= 5 then
-            dbms_output.put_line('성과급은 ' || v_sal * 0.15 || '원 입니다.');
-        when v_cnt_manage < 5 and v_cnt_manage > 0 then
-            dbms_output.put_line('성과급은 ' || v_sal * 0.1 || '원 입니다.');
-        else dbms_output.put_line('대상자가 아닙니다.');
-    end case;
-end;
-/
 
 
 --2. TBL_NUMBER 테이블에 0~99사이의 난수를 100개 저장하고, 입력된 난수의 합계를 출력하는 익명블럭을 작성하세요.
@@ -129,6 +114,7 @@ end;
 /
 
 
+
 --3.주민번호를 입력받아 나이를 리턴하는 저장함수 fn_age를 사용해서 사번, 이름, 성별, 연봉, 나이를 조회
 create or replace function fn_age (
     f_emp_no employee.emp_no%type
@@ -157,6 +143,7 @@ select
     fn_age(emp_no) 나이
 from
     employee;
+
 
 
 --4. 특별상여금을 계산하는 함수 fn_calc_incentive(salary, hire_date)를 생성하고, 사번, 사원명, 입사일, 근무개월수(n년 m월), 특별상여금 조회
